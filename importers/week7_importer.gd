@@ -57,9 +57,9 @@ func convert_chart(_chart : String, _meta : String, _events : String) -> Diction
 		for n in notes.size():
 			var parsed_note : Array = notes[n] as Array
 			var note : NoteData = NoteData.new()
-			note.Time = (((parsed_note[0] as float) - measure_time) / (60.0 / measure_bpm / 4.0) / 1000.0) + i
+			note.Time = (((parsed_note[0] as float) - measure_time) / (60.0 / measure_bpm * 4.0) / 1000.0) + i
 			note.Lane = (parsed_note[1] as int) % 4
-			note.Length = (parsed_note[2] as float) / (60.0 / measure_bpm / 4.0) / 1000.0
+			note.Length = (parsed_note[2] as float) / (60.0 / measure_bpm * 4.0) / 1000.0
 			note.Type = (parsed_note[3] as String) if parsed_note.size() > 3 else "normal"
 			
 			if (parsed_note[0] as float) < measure_time:
@@ -82,7 +82,7 @@ func convert_chart(_chart : String, _meta : String, _events : String) -> Diction
 			else:
 				speaker_notes.push_back(note)
 			
-			measure_time += Utility.measure_to_ms(1.0, measure_bpm)
+		measure_time += Utility.measure_to_ms(1.0, measure_bpm, 4.0)
 	
 	chart.BpmInfo = bpm_changes
 	
