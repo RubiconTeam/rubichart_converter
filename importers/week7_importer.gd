@@ -44,14 +44,15 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var camera_changes : Array[EventData] = []
 	
 	var last_camera : int = 0
-	var measure_time : float = 0.0
 	var sections : Array = swag_song.get("notes") as Array
-	for i in sections.size():
+	for i in sections.size(): # Create BPMs first
 		var cur_section : Dictionary = sections[i] as Dictionary
 		if (bpm_changes.filter(func(bpm:BpmInfo)->bool:return bpm.Time == i).size() == 0 and cur_section.get("changeBPM", false) as bool):
 			var new_bpm : BpmInfo = BpmInfo.new(); new_bpm.Time = i; new_bpm.Bpm = cur_section["bpm"] as float; new_bpm.TimeSignatureDenominator = (cur_section.get("lengthInSteps", 16) as int) / 4
 			bpm_changes.push_back(new_bpm)
-		
+	
+	for i in sections.size():
+		var cur_section : Dictionary = sections[i] as Dictionary
 		var measure_bpm : float = (bpm_changes.filter(func(bpm:BpmInfo)->bool:return bpm.Time <= i).back() as BpmInfo).Bpm
 		var player_section : bool = cur_section.get("mustHitSection") as bool
 		var section_camera : int = 1 if player_section else 0
@@ -70,14 +71,11 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		for n in notes.size():
 			var parsed_note : Array = notes[n] as Array
 			var note : NoteData = NoteData.new()
-			note.Time = (((parsed_note[0] as float) - measure_time) / (60.0 / measure_bpm * 4.0) / 1000.0) + i
+			note.Time = Utility.ms_to_measures(parsed_note[0] as float, bpm_changes)
 			note.Lane = (parsed_note[1] as int) % 4
-			note.Length = (parsed_note[2] as float) / (60.0 / measure_bpm * 4.0) / 1000.0
+			note.Length = Utility.get_length_from_ms(parsed_note[0] as float, (parsed_note[0] as float) + (parsed_note[2] as float), bpm_changes)
 			note.Type = (parsed_note[3] as String) if parsed_note.size() > 3 else "normal"
 			
-			if (parsed_note[0] as float) < measure_time:
-				main_scene.print_new_line("[WARNING] Measure " + str(i) + ", note " + str(n) + ", lane " + str(parsed_note[1] as int) + ": time of " + str(parsed_note[0] as float) + " exceeds calculated measure start time of " + str(measure_time) + "! Calculated milliseconds will be " + str((parsed_note[0] as float) - measure_time) + ", measure " + str(note.MsTime))
-		
 			var lane : int = parsed_note[1] as int
 			if lane <= 3:
 				if player_section:
@@ -94,10 +92,6 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 					player_notes.push_back(note)
 			else:
 				speaker_notes.push_back(note)
-			
-		measure_time += Utility.measure_to_ms(1.0, measure_bpm, 4.0)
-	
-	chart.BpmInfo = bpm_changes
 	
 	var opponent_chart : IndividualChart = IndividualChart.new(); opponent_chart.Name = "Opponent"; opponent_chart.Notes = opponent_notes; opponent_chart.Lanes = 4
 	var player_chart : IndividualChart = IndividualChart.new(); player_chart.Name = "Player"; player_chart.Notes = player_notes; player_chart.Lanes = 4
@@ -118,6 +112,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var meta : SongMeta = SongMeta.new()
 	meta.Stage = swag_song.get("stage", "stage") as String
 	meta.PlayableCharts = ["Player", "Opponent"]
+	meta.BpmInfo = bpm_changes
 	
 	var opponent_meta : CharacterMeta = CharacterMeta.new(); opponent_meta.Character = swag_song.get("player2", "Missing"); opponent_meta.BarLine = "Opponent"; opponent_meta.Nickname = "Opponent"
 	var player_meta : CharacterMeta = CharacterMeta.new(); player_meta.Character = swag_song.get("player1", "Missing"); player_meta.BarLine = "Player"; player_meta.Nickname = "Player"
@@ -125,7 +120,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	meta.Characters = [opponent_meta, player_meta, speaker_meta]
 	
 	return {
-		"chart": chart,
+		"charts": {"Chart": chart},
 		"events": event_meta,
 		"meta": meta
 	}

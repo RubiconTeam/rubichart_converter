@@ -78,9 +78,15 @@ func start_convert() -> void:
 			continue
 			
 		file_access.close()
+		
+	if output.is_empty():
+		return
 	
 	var output_folder : String = output_line_edit.text
-	ResourceSaver.save(output["chart"], output_folder + "/Chart.tres")
+	var charts : Dictionary = output["charts"] as Dictionary
+	for key in charts.keys():
+		ResourceSaver.save(charts[key], output_folder + "/" + key + ".tres")
+
 	if song_meta_check.button_pressed:
 		ResourceSaver.save(output["meta"], output_folder + "/Meta.tres")
 	if events_check.button_pressed:
