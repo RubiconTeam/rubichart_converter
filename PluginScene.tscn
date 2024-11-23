@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/rubichart_importer/plugin_scene.gd" id="1_ahpqm"]
 
-[node name="Chart" type="Control"]
-layout_mode = 3
+[node name="Chart" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,127 +10,130 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ahpqm")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="TypeContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TypeContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TypeContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/TypeContainer"]
 layout_mode = 2
 text = "Choose a chart format:"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/TypeContainer"]
+[node name="OptionButton" type="OptionButton" parent="ScrollContainer/VBoxContainer/TypeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "Funkin' (Week 7 and below)"
+popup/item_0/id = 0
 
-[node name="HSeparator1" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator1" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="InputContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="InputContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/InputContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/InputContainer"]
 layout_mode = 2
 text = "Input File:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/InputContainer"]
+[node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "res://path/to/chart.json"
 
-[node name="Button" type="Button" parent="VBoxContainer/InputContainer"]
+[node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/InputContainer"]
 layout_mode = 2
 text = "Choose"
 
-[node name="EventsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="EventsContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/EventsContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/EventsContainer"]
 layout_mode = 2
 text = "Events File:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/EventsContainer"]
+[node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/EventsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "res://path/to/events"
 
-[node name="Button" type="Button" parent="VBoxContainer/EventsContainer"]
+[node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/EventsContainer"]
 layout_mode = 2
 text = "Choose"
 
-[node name="MetaContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="MetaContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/MetaContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/MetaContainer"]
 layout_mode = 2
 text = "Meta File:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MetaContainer"]
+[node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/MetaContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "res://path/to/meta"
 
-[node name="Button" type="Button" parent="VBoxContainer/MetaContainer"]
+[node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/MetaContainer"]
 layout_mode = 2
 text = "Choose"
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="OutputContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="OutputContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/OutputContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/OutputContainer"]
 layout_mode = 2
 text = "Output:"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/OutputContainer"]
+[node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/OutputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "res://path/to/folder"
 
-[node name="Button" type="Button" parent="VBoxContainer/OutputContainer"]
+[node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/OutputContainer"]
 layout_mode = 2
 text = "Choose"
 
-[node name="OutputOptionsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="OutputOptionsContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="SongMetaCheck" type="CheckBox" parent="VBoxContainer/OutputOptionsContainer"]
+[node name="SongMetaCheck" type="CheckBox" parent="ScrollContainer/VBoxContainer/OutputOptionsContainer"]
 layout_mode = 2
 text = "Create Song Meta"
 
-[node name="EventsCheck" type="CheckBox" parent="VBoxContainer/OutputOptionsContainer"]
+[node name="EventsCheck" type="CheckBox" parent="ScrollContainer/VBoxContainer/OutputOptionsContainer"]
 layout_mode = 2
 text = "Create Events"
 
-[node name="SaveButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Convert to RubiChart"
-
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ConsoleLabel" type="Label" parent="VBoxContainer"]
+[node name="ConsoleLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 text = "Console:"
 
-[node name="ConsoleContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ConsoleContainer" type="PanelContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ConsoleContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ConsoleOutput" type="Label" parent="VBoxContainer/ConsoleContainer/PanelContainer"]
+[node name="ConsoleOutput" type="Label" parent="ScrollContainer/VBoxContainer/ConsoleContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.0
+
+[node name="SaveButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Convert to RubiChart"

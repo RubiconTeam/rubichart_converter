@@ -2,28 +2,28 @@
 
 extends Control
 
-@onready var console_output : Label = $VBoxContainer/ConsoleContainer/PanelContainer/ConsoleOutput
+@onready var console_output : Label = $ScrollContainer/VBoxContainer/ConsoleContainer/ConsoleOutput
 
-@onready var chart_type_selection : OptionButton = $"VBoxContainer/TypeContainer/OptionButton"
+@onready var chart_type_selection : OptionButton = $"ScrollContainer/VBoxContainer/TypeContainer/OptionButton"
 
-@onready var chart_line_edit : LineEdit = $"VBoxContainer/InputContainer/LineEdit"
+@onready var chart_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/InputContainer/LineEdit"
 
-@onready var meta_container : HBoxContainer = $"VBoxContainer/MetaContainer"
-@onready var meta_line_edit : LineEdit = $"VBoxContainer/MetaContainer/LineEdit"
+@onready var meta_container : HBoxContainer = $ScrollContainer/"VBoxContainer/MetaContainer"
+@onready var meta_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/MetaContainer/LineEdit"
 
-@onready var events_container : HBoxContainer = $"VBoxContainer/EventsContainer"
-@onready var events_line_edit : LineEdit = $"VBoxContainer/EventsContainer/LineEdit"
+@onready var events_container : HBoxContainer = $"ScrollContainer/VBoxContainer/EventsContainer"
+@onready var events_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/EventsContainer/LineEdit"
 
-@onready var song_meta_check : CheckBox = $"VBoxContainer/OutputOptionsContainer/SongMetaCheck"
-@onready var events_check : CheckBox = $"VBoxContainer/OutputOptionsContainer/EventsCheck"
+@onready var song_meta_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/SongMetaCheck"
+@onready var events_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/EventsCheck"
 
-@onready var output_line_edit : LineEdit = $"VBoxContainer/OutputContainer/LineEdit"
-@onready var output_button : Button = $"VBoxContainer/SaveButton"
+@onready var output_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/OutputContainer/LineEdit"
+@onready var output_button : Button = $"SaveButton"
 
-@onready var chart_file_dialog : Button = $"VBoxContainer/InputContainer/Button"
-@onready var meta_file_dialog : Button = $"VBoxContainer/MetaContainer/Button"
-@onready var events_file_dialog : Button = $"VBoxContainer/EventsContainer/Button"
-@onready var output_file_dialog : Button = $"VBoxContainer/OutputContainer/Button"
+@onready var chart_file_dialog : Button = $"ScrollContainer/VBoxContainer/InputContainer/Button"
+@onready var meta_file_dialog : Button = $"ScrollContainer/VBoxContainer/MetaContainer/Button"
+@onready var events_file_dialog : Button = $"ScrollContainer/VBoxContainer/EventsContainer/Button"
+@onready var output_file_dialog : Button = $"ScrollContainer/VBoxContainer/OutputContainer/Button"
 
 var index : int = 0
 
