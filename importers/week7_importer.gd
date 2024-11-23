@@ -120,7 +120,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	meta.Characters = [opponent_meta, player_meta, speaker_meta]
 	
 	return {
-		"charts": {"Chart": chart},
+		"charts": {"Mania-Chart": chart},
 		"events": event_meta,
 		"meta": meta
 	}
