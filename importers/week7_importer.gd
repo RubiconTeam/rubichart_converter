@@ -8,14 +8,27 @@ func get_name() -> String:
 func get_extension() -> String:
 	return ".json"
 	
-func convert_chart(_chart : String, _meta : String, _events : String) -> Dictionary:
-	var funkin_json : Dictionary = JSON.parse_string(_chart) as Dictionary
-	if (not funkin_json.has("song")):
+func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
+	if _chart == null:
+		main_scene.print_new_line("[ERROR] Chart file was not found!")
+		return {}
+	
+	if _chart.get_error() != OK:
+		main_scene.print_new_line("[ERROR] An error has occured while opening this file! Error: " + str(_chart.get_error()))
+		return {}
+	
+	var funkin_json : JSON = JSON.new()
+	if funkin_json.parse(_chart.get_as_text(true)) != OK:
+		main_scene.print_new_line("[ERROR] An error has occured parsing this file! Error: " + str(funkin_json.get_error_message()))
+		return {}
+	
+	var parsed_json : Dictionary = funkin_json.data as Dictionary
+	if (not parsed_json.has("song")):
 		main_scene.print_new_line("[ERROR] The JSON file given was not a Funkin' Chart!")
 		return {}
 		
 	var chart : RubiChart = RubiChart.new()
-	var swag_song : Dictionary = funkin_json.get("song") as Dictionary
+	var swag_song : Dictionary = parsed_json.get("song") as Dictionary
 	
 	var first_bpm : BpmInfo = BpmInfo.new()
 	first_bpm.Time = 0.0

@@ -66,10 +66,18 @@ func start_convert() -> void:
 	clear_console()
 	var current : Importer = importers[index]
 	
-	var chart_contents : String = FileAccess.get_file_as_string(chart_line_edit.text)
-	var meta_contents : String = FileAccess.get_file_as_string(meta_line_edit.text) if current.needs_meta_file() else ""
-	var events_contents : String = FileAccess.get_file_as_string(events_line_edit.text) if current.needs_events_file() else ""
+	var chart_contents : FileAccess = FileAccess.open(chart_line_edit.text, FileAccess.READ)
+	var meta_contents : FileAccess = FileAccess.open(meta_line_edit.text, FileAccess.READ) if current.needs_meta_file() else null
+	var events_contents : FileAccess = FileAccess.open(events_line_edit.text, FileAccess.READ) if current.needs_events_file() else null
 	var output : Dictionary = importers[index].convert_chart(chart_contents, meta_contents, events_contents)
+	
+	var file_accessors : Array[FileAccess] = [chart_contents, meta_contents, events_contents]
+	for i in file_accessors.size():
+		var file_access : FileAccess = file_accessors[i]
+		if file_access == null or !file_access.is_open():
+			continue
+			
+		file_access.close()
 	
 	var output_folder : String = output_line_edit.text
 	ResourceSaver.save(output["chart"], output_folder + "/Chart.tres")
