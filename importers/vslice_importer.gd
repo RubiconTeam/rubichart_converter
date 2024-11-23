@@ -16,7 +16,7 @@ func get_meta_extension() -> String:
 	
 func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
 	if _meta == null:
-		main_scene.print_new_line("[ERROR] Chart file was not found!")
+		main_scene.print_new_line("[ERROR] Metadata file was not found!")
 		return {}
 	
 	if _meta.get_error() != OK:
