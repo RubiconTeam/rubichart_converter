@@ -99,13 +99,19 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var event_list : Array[EventData] = []
 	for i in vslice_events.size():
 		var vslice_event : Dictionary = vslice_events[i] as Dictionary
-		var event : EventData = EventData.new()
+		var event : EventData = get_rubicon_event(vslice_event, bpm_info, time_format)
+		
+		if event != null:
+			event_list.push_back(event)
+			continue
+		
+		event = EventData.new()
 		event.Time = get_measure_by_format(vslice_event.get("t") as float, bpm_info, time_format)
-		event.Name = vslice_event.get("e")
+		event.Name = vslice_event.get("e") as String
 		
 		var vslice_arguments : Dictionary = vslice_event.get("v") as Dictionary
 		for argument in vslice_arguments.keys():
-			event.Arguments[argument] = [vslice_arguments[argument]]
+			event.Arguments[argument] = vslice_arguments[argument]
 			
 		event_list.push_back(event)
 	
@@ -136,6 +142,27 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		"events": events,
 		"meta": meta
 	}
+
+func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[BpmInfo], time_format : String) -> EventData:
+	var name : String =  vslice_event.get("e") as String
+	var vslice_arguments : Dictionary = vslice_event.get("v") as Dictionary
+	match name:
+		"FocusCamera":
+			var event : EventData = EventData.new()
+			event.Time = get_measure_by_format(vslice_event.get("t") as float, bpm_info, time_format)
+			if vslice_arguments.get("x", 0.0) != 0.0 or vslice_arguments.get("y", 0.0) != 0.0:
+				event.Name = &"Set Camera Position"
+				event.Arguments[&"X"] = vslice_arguments.get("x", 0.0)
+				event.Arguments[&"Y"] = vslice_arguments.get("y", 0.0)
+			else:
+				event.Name = &"Set Camera Focus"
+				
+				var vslice_char_focus : int = vslice_arguments.get("char") as int
+				event.Arguments[&"Focus"] = &"Opponent" if vslice_char_focus == 1 else &"Player"
+			
+			return event
+	
+	return null
 
 func get_measure_by_format(time : float, bpm_changes : Array[BpmInfo], time_format : String) -> float:
 	match time_format:

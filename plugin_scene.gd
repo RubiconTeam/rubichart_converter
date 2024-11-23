@@ -34,6 +34,9 @@ func _ready() -> void:
 	var importers_path : String = "res://addons/rubichart_importer/importers/"
 	var scripts : PackedStringArray = DirAccess.get_files_at(importers_path)
 	for i in scripts.size():
+		if scripts[i].ends_with(".uid"):
+			continue
+		
 		var current : Importer = (load(importers_path + scripts[i]) as GDScript).new() as Importer
 		current.main_scene = self
 		chart_type_selection.add_item(current.get_name())

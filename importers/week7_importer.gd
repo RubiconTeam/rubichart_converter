@@ -62,7 +62,16 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			section_camera = 2
 			
 		if last_camera != section_camera:
-			var cam_event : EventData = EventData.new(); cam_event.Time = i; cam_event.Name = "Set Camera Focus"; cam_event.Arguments = { "Focus": [section_camera] }
+			var cam_focus_name : StringName = &""
+			match section_camera:
+				0:
+					cam_focus_name = &"Opponent"
+				1:
+					cam_focus_name = &"Player"
+				2:
+					cam_focus_name = &"Speaker"
+			
+			var cam_event : EventData = EventData.new(); cam_event.Time = i; cam_event.Name = "Set Camera Focus"; cam_event.Arguments = { "Focus": cam_focus_name }
 			camera_changes.push_back(cam_event)
 			
 		last_camera = section_camera
