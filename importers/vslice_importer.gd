@@ -31,8 +31,15 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var vslice_meta : Dictionary = vslice_meta_json.data as Dictionary
 	var vslice_play_data : Dictionary = vslice_meta.get("playData") as Dictionary
 	
-	var difficulties : PackedStringArray = vslice_play_data.get("difficulties", []) as PackedStringArray
+	var vslice_difficulties : PackedStringArray = vslice_play_data.get("difficulties", []) as PackedStringArray
 	var ratings : Dictionary = vslice_play_data.get("ratings") as Dictionary
+	var formatted_diffs : Array[String] = []
+	for i in vslice_difficulties.size():
+		formatted_diffs.push_back(vslice_difficulties[i] + " (" + str(ratings[vslice_difficulties[i]]) + ")")
+	
+	var difficulties : Array[String] = []
+	for index in await main_scene.open_chart_selector(formatted_diffs):
+		difficulties.push_back(vslice_difficulties[index])
 	
 	var time_format : String = vslice_meta.get("timeFormat", "ms") as String
 	var vslice_bpm_info : Array = vslice_meta.get("timeChanges") as Array

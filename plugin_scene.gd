@@ -30,6 +30,8 @@ var index : int = 0
 const Importer = preload("res://addons/rubichart_importer/importer.gd")
 var importers : Array[Importer] = []
 
+const chart_selector_scene : PackedScene = preload("res://addons/rubichart_importer/resources/ChartSelector.tscn")
+
 func _ready() -> void:
 	var importers_path : String = "res://addons/rubichart_importer/importers/"
 	var scripts : PackedStringArray = DirAccess.get_files_at(importers_path)
@@ -72,7 +74,7 @@ func start_convert() -> void:
 	var chart_contents : FileAccess = FileAccess.open(chart_line_edit.text, FileAccess.READ)
 	var meta_contents : FileAccess = FileAccess.open(meta_line_edit.text, FileAccess.READ) if current.needs_meta_file() else null
 	var events_contents : FileAccess = FileAccess.open(events_line_edit.text, FileAccess.READ) if current.needs_events_file() else null
-	var output : Dictionary = importers[index].convert_chart(chart_contents, meta_contents, events_contents)
+	var output : Dictionary = await importers[index].convert_chart(chart_contents, meta_contents, events_contents)
 	
 	var file_accessors : Array[FileAccess] = [chart_contents, meta_contents, events_contents]
 	for i in file_accessors.size():
@@ -128,3 +130,16 @@ func open_file_dialog(file_mode : int, extensions : PackedStringArray, on_single
 	
 	file_dialog.visible = true
 	add_child(file_dialog)
+
+func open_chart_selector(selections : PackedStringArray) -> PackedInt32Array:
+	var chart_selector : AcceptDialog = chart_selector_scene.instantiate()
+	var item_list : ItemList = chart_selector.get_node("VBoxContainer/ScrollContainer/ItemList")
+	for i in selections.size():
+		item_list.add_item(selections[i])
+
+	add_child(chart_selector)
+	chart_selector.visible = true
+	await chart_selector.confirmed
+	chart_selector.queue_free()
+	
+	return item_list.get_selected_items()
