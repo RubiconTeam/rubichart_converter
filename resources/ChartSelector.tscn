@@ -2,7 +2,7 @@
 
 [node name="ChartSelector" type="AcceptDialog"]
 title = "Chart Selector"
-initial_position = 1
+initial_position = 2
 size = Vector2i(547, 300)
 visible = true
 
