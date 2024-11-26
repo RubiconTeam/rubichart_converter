@@ -128,7 +128,15 @@ layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.0
 
-[node name="SaveButton" type="Button" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 8
-text = "Convert to RubiChart"
+
+[node name="TRBCSaveButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Convert to *.trbc"
+
+[node name="RBCSaveButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Convert to *.rbc"

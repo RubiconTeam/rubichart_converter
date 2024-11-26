@@ -18,7 +18,8 @@ extends Control
 @onready var events_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/EventsCheck"
 
 @onready var output_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/OutputContainer/LineEdit"
-@onready var output_button : Button = $"SaveButton"
+@onready var output_rbc_button : Button = $"HBoxContainer/RBCSaveButton"
+@onready var output_trbc_button : Button = $"HBoxContainer/TRBCSaveButton"
 
 @onready var chart_file_dialog : Button = $"ScrollContainer/VBoxContainer/InputContainer/Button"
 @onready var meta_file_dialog : Button = $"ScrollContainer/VBoxContainer/MetaContainer/Button"
@@ -50,7 +51,8 @@ func _ready() -> void:
 	output_file_dialog.pressed.connect(func()->void:open_file_dialog(FileDialog.FILE_MODE_OPEN_DIR, [], func(path:String)->void:output_line_edit.text=path))
 	
 	chart_type_selection.item_selected.connect(on_type_changed)
-	output_button.pressed.connect(start_convert)
+	output_rbc_button.pressed.connect(convert_to_rbc)
+	output_trbc_button.pressed.connect(func()->void:print_new_line(".trbc has not been made yet, sorry! :("))
 	
 	index = 0
 	on_type_changed(index)
@@ -67,10 +69,29 @@ func on_type_changed(idx : int):
 	meta_container.visible = current.needs_meta_file()
 	meta_line_edit.placeholder_text = "res://path/to/meta" + current.get_meta_extension()
 
-func start_convert() -> void:
+func convert_to_rbc() -> void:
 	clear_console()
-	var current : Importer = importers[index]
 	
+	var output : Dictionary = await get_output()
+	if output.is_empty():
+		return
+	
+	var output_folder : String = output_line_edit.text
+	var charts : Dictionary = output["charts"] as Dictionary
+	for key in charts.keys():
+		var writer : FileAccess = FileAccess.open(output_folder + "/" + key + ".rbc", FileAccess.WRITE)
+		writer.store_buffer((charts[key] as RubiChart).ToBytes())
+		writer.close()
+		
+		EditorInterface.get_file_system_dock().navigate_to_path(output_folder + "/" + key + ".rbc")
+
+	if song_meta_check.button_pressed:
+		ResourceSaver.save(output["meta"], output_folder + "/Meta.tres")
+	if events_check.button_pressed:
+		ResourceSaver.save(output["events"], output_folder + "/Events.tres")
+
+func get_output() -> Dictionary:
+	var current : Importer = importers[index]
 	var chart_contents : FileAccess = FileAccess.open(chart_line_edit.text, FileAccess.READ)
 	var meta_contents : FileAccess = FileAccess.open(meta_line_edit.text, FileAccess.READ) if current.needs_meta_file() else null
 	var events_contents : FileAccess = FileAccess.open(events_line_edit.text, FileAccess.READ) if current.needs_events_file() else null
@@ -83,19 +104,8 @@ func start_convert() -> void:
 			continue
 			
 		file_access.close()
-		
-	if output.is_empty():
-		return
 	
-	var output_folder : String = output_line_edit.text
-	var charts : Dictionary = output["charts"] as Dictionary
-	for key in charts.keys():
-		ResourceSaver.save(charts[key], output_folder + "/" + key + ".tres")
-
-	if song_meta_check.button_pressed:
-		ResourceSaver.save(output["meta"], output_folder + "/Meta.tres")
-	if events_check.button_pressed:
-		ResourceSaver.save(output["events"], output_folder + "/Events.tres")
+	return output
 
 func print_new_line(text : String) -> void:
 	console_output.text += "\n" + text
