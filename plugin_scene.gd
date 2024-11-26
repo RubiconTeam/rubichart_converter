@@ -33,7 +33,7 @@ var importers : Array[Importer] = []
 const chart_selector_scene : PackedScene = preload("res://addons/rubichart_converter/resources/ChartSelector.tscn")
 
 func _ready() -> void:
-	var importers_path : String = "res://addons/rubichart_converter/importers/"
+	var importers_path : String = "res://addons/rubichart_converter/converters/"
 	var scripts : PackedStringArray = DirAccess.get_files_at(importers_path)
 	for i in scripts.size():
 		if scripts[i].ends_with(".uid"):
