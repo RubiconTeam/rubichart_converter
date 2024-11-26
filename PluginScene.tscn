@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://chcq8skha6vqp"]
 
-[ext_resource type="Script" uid="uid://cttjgmpv3o5xw" path="res://addons/rubichart_importer/plugin_scene.gd" id="1_ahpqm"]
+[ext_resource type="Script" uid="uid://cttjgmpv3o5xw" path="res://addons/rubichart_converter/plugin_scene.gd" id="1_ahpqm"]
 
 [node name="Chart" type="VBoxContainer"]
 anchors_preset = 15

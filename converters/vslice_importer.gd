@@ -1,6 +1,6 @@
 @tool
 
-extends "res://addons/rubichart_importer/importer.gd"
+extends "res://addons/rubichart_converter/importer.gd"
 
 func get_name() -> String:
 	return "Funkin' (Week-End 1 and later)"

@@ -2,8 +2,8 @@
 
 extends RefCounted
 
-const PluginScene = preload("res://addons/rubichart_importer/plugin_scene.gd")
-const Utility = preload("res://addons/rubichart_importer/utility.gd")
+const PluginScene = preload("res://addons/rubichart_converter/plugin_scene.gd")
+const Utility = preload("res://addons/rubichart_converter/utility.gd")
 
 var main_scene : PluginScene
 

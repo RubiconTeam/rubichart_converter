@@ -1,12 +1,12 @@
 @tool
 extends EditorPlugin
 
-var scene : PackedScene = preload("res://addons/rubichart_importer/PluginScene.tscn")
+var scene : PackedScene = preload("res://addons/rubichart_converter/PluginScene.tscn")
 var editor_node : Node
 
 func _enter_tree() -> void:
 	editor_node = scene.instantiate()
-	add_control_to_bottom_panel(editor_node, "Import")
+	add_control_to_bottom_panel(editor_node, "Convert")
 	pass
 
 

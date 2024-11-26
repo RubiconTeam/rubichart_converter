@@ -27,13 +27,13 @@ extends Control
 
 var index : int = 0
 
-const Importer = preload("res://addons/rubichart_importer/importer.gd")
+const Importer = preload("res://addons/rubichart_converter/importer.gd")
 var importers : Array[Importer] = []
 
-const chart_selector_scene : PackedScene = preload("res://addons/rubichart_importer/resources/ChartSelector.tscn")
+const chart_selector_scene : PackedScene = preload("res://addons/rubichart_converter/resources/ChartSelector.tscn")
 
 func _ready() -> void:
-	var importers_path : String = "res://addons/rubichart_importer/importers/"
+	var importers_path : String = "res://addons/rubichart_converter/importers/"
 	var scripts : PackedStringArray = DirAccess.get_files_at(importers_path)
 	for i in scripts.size():
 		if scripts[i].ends_with(".uid"):
