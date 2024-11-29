@@ -55,9 +55,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 						new_bpm.Time = float(bpm_lines[0]) / 4.0
 						new_bpm.Bpm = float(bpm_lines[1])
 						bpm_info.push_back(new_bpm)
-						
-						print(new_bpm.Time, " ", new_bpm.Bpm)
-						
+					
 					if cur_line.ends_with(";"):
 						break
 						
@@ -122,7 +120,6 @@ func load_chart_from_type(chart : RubiChart, type : PackedStringArray, reader : 
 		
 		line_data.push_back(cur_line)
 	
-	print(measure_data.size())
 	var lane_count : int = 0
 	var chart_count : int = 1 if type[1] != "couple" else 2
 	match type[0]:
