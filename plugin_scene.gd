@@ -32,6 +32,7 @@ const Importer = preload("res://addons/rubichart_converter/importer.gd")
 var importers : Array[Importer] = []
 
 const chart_selector_scene : PackedScene = preload("res://addons/rubichart_converter/resources/ChartSelector.tscn")
+const user_input_scene : PackedScene = preload("res://addons/rubichart_converter/resources/StringUserInput.tscn")
 
 func _ready() -> void:
 	var importers_path : String = "res://addons/rubichart_converter/converters/"
@@ -153,3 +154,18 @@ func open_chart_selector(selections : PackedStringArray) -> PackedInt32Array:
 	chart_selector.queue_free()
 	
 	return item_list.get_selected_items()
+
+func get_line_from_user(title : String, description : String, placeholder : String) -> String:
+	var window : AcceptDialog = user_input_scene.instantiate()
+	window.title = title
+	window.get_node("VBoxContainer/Label").text = description
+	
+	var line_edit : LineEdit = window.get_node("VBoxContainer/LineEdit")
+	line_edit.placeholder_text = placeholder
+	
+	add_child(window)
+	window.visible = true
+	await window.confirmed
+	window.queue_free()
+	
+	return line_edit.text
