@@ -53,7 +53,7 @@ func _ready() -> void:
 	
 	chart_type_selection.item_selected.connect(on_type_changed)
 	output_rbc_button.pressed.connect(convert_to_rbc)
-	output_trbc_button.pressed.connect(func()->void:print_new_line(".trbc has not been made yet, sorry! :("))
+	output_trbc_button.pressed.connect(convert_to_trbc)
 	
 	index = 0
 	on_type_changed(index)
@@ -82,6 +82,27 @@ func convert_to_rbc() -> void:
 	for key in charts.keys():
 		var writer : FileAccess = FileAccess.open(output_folder + "/" + key + ".rbc", FileAccess.WRITE)
 		writer.store_buffer((charts[key] as RubiChart).ToBytes())
+		writer.close()
+		
+		EditorInterface.get_file_system_dock().navigate_to_path(output_folder + "/" + key + ".rbc")
+
+	if song_meta_check.button_pressed:
+		ResourceSaver.save(output["meta"], output_folder + "/Meta.tres")
+	if events_check.button_pressed:
+		ResourceSaver.save(output["events"], output_folder + "/Events.tres")
+
+func convert_to_trbc() -> void:
+	clear_console()
+	
+	var output : Dictionary = await get_output()
+	if output.is_empty():
+		return
+	
+	var output_folder : String = output_line_edit.text
+	var charts : Dictionary = output["charts"] as Dictionary
+	for key in charts.keys():
+		var writer : FileAccess = FileAccess.open(output_folder + "/" + key + ".trbc", FileAccess.WRITE)
+		writer.store_string((charts[key] as RubiChart).ToText())
 		writer.close()
 		
 		EditorInterface.get_file_system_dock().navigate_to_path(output_folder + "/" + key + ".rbc")
