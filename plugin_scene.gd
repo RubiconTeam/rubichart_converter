@@ -80,10 +80,7 @@ func convert_to_rbc() -> void:
 	var output_folder : String = output_line_edit.text
 	var charts : Dictionary = output["charts"] as Dictionary
 	for key in charts.keys():
-		var writer : FileAccess = FileAccess.open(output_folder + "/" + key + ".rbc", FileAccess.WRITE)
-		writer.store_buffer((charts[key] as RubiChart).ToBytes())
-		writer.close()
-		
+		ResourceSaver.save(charts[key] as RubiChart, output_folder + "/" + key + ".rbc")
 		EditorInterface.get_file_system_dock().navigate_to_path(output_folder + "/" + key + ".rbc")
 
 	if song_meta_check.button_pressed:
