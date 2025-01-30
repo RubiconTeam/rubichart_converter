@@ -71,7 +71,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 				2:
 					cam_focus_name = &"Speaker"
 			
-			var cam_event : EventData = EventData.new(); cam_event.Time = i; cam_event.Name = "Set Camera Focus"; cam_event.Arguments = { "Focus": cam_focus_name }
+			var cam_event : EventData = EventData.new(); cam_event.Time = i; cam_event.Name = "SetCameraFocus"; cam_event.Arguments = { "Focus": cam_focus_name }
 			camera_changes.push_back(cam_event)
 			
 		last_camera = section_camera

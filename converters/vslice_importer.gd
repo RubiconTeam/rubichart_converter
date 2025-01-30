@@ -162,7 +162,7 @@ func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[BpmInfo], tim
 				event.Arguments[&"X"] = vslice_arguments.get("x", 0.0)
 				event.Arguments[&"Y"] = vslice_arguments.get("y", 0.0)
 			else:
-				event.Name = &"Set Camera Focus"
+				event.Name = &"SetCameraFocus"
 				
 				var vslice_char_focus : int = vslice_arguments.get("char") as int
 				event.Arguments[&"Focus"] = &"Opponent" if vslice_char_focus == 1 else &"Player"

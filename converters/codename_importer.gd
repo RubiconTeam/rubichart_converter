@@ -90,7 +90,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			"Camera Movement":
 				var event : EventData = EventData.new()
 				event.Time = Utility.ms_to_measures(cne_event_ms, bpm_info)
-				event.Name = &"Set Camera Focus"
+				event.Name = &"SetCameraFocus"
 				event.Arguments = { &"Focus": cne_chart_names[cne_event_params[0] as int] }
 				events.push_back(event)
 				continue
