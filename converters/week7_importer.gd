@@ -6,7 +6,7 @@ func get_name() -> String:
 	return "Funkin' (Week 7 and below)"
 	
 func get_extension() -> String:
-	return ".json"
+	return "*.json"
 	
 func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
 	if _chart == null:

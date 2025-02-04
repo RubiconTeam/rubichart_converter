@@ -6,7 +6,7 @@ func get_name() -> String:
 	return "Simfile (*.sm)"
 	
 func get_extension() -> String:
-	return ".sm"
+	return "*.sm"
 
 var special_note_type : String = ""
 func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:

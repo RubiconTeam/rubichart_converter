@@ -6,13 +6,13 @@ func get_name() -> String:
 	return "Funkin' (Week-End 1 and later)"
 	
 func get_extension() -> String:
-	return ".json"
+	return "*.json"
 	
 func needs_meta_file() -> bool:
 	return true
 	
 func get_meta_extension() -> String:
-	return ".json"
+	return "*.json"
 	
 func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
 	if _meta == null:

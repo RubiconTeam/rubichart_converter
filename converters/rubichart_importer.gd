@@ -6,7 +6,7 @@ func get_name() -> String:
 	return "RubiChart Binary"
 	
 func get_extension() -> String:
-	return ".rbc"
+	return "*.rbc"
 	
 func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
 	var chart : RubiChart = RubiChart.new()
