@@ -66,7 +66,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		
 		cne_chart_names[cne_chart_type] = current_cne_chart.get("position") as StringName
 	
-	var note_types : Array = ["normal"]
+	var note_types : Array = ["Normal"]
 	note_types.append_array(cne_chart_meta.get("noteTypes") as Array)
 	
 	# Events

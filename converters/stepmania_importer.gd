@@ -23,7 +23,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	var opponent_meta : CharacterMeta = CharacterMeta.new(); opponent_meta.Character = "bf-pixel"; opponent_meta.BarLine = "Opponent"; opponent_meta.Nickname = "Opponent"
 	var player_meta : CharacterMeta = CharacterMeta.new(); player_meta.Character = "bf"; player_meta.BarLine = "Player"; player_meta.Nickname = "Player"
-	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Character = "gf"; speaker_meta.BarLine = ""; speaker_meta.Nickname = "Speaker"
+	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Character = "gf"; speaker_meta.BarLine = "Speaker"; speaker_meta.Nickname = "Speaker"
 	meta.Characters = [opponent_meta, player_meta, speaker_meta]
 	
 	var charts : Dictionary[String, RubiChart] = {}
@@ -51,6 +51,9 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 					var split_bpms : PackedStringArray = cur_line.split(",")
 					for i in split_bpms.size():
 						var bpm_lines : PackedStringArray = split_bpms[i].rstrip(";").split("=")
+						if bpm_lines.size() != 2:
+							continue
+						
 						var new_bpm : BpmInfo = BpmInfo.new()
 						new_bpm.Time = float(bpm_lines[0]) / 4.0
 						new_bpm.Bpm = float(bpm_lines[1])
@@ -110,8 +113,11 @@ func load_chart_from_type(chart : RubiChart, type : PackedStringArray, reader : 
 	
 	while cur_line != ";" or not cur_line.ends_with(";"):
 		cur_line = reader.get_line()
+		if cur_line.begins_with("//"):
+			continue
+		
 		if special_note_type.is_empty() and (cur_line.contains("M") or cur_line.contains("4")):
-			special_note_type = await main_scene.get_line_from_user("Special Note Type", "Enter the name of the note type for special notes:", "normal")
+			special_note_type = await main_scene.get_line_from_user("Special Note Type", "Enter the name of the note type for special notes:", "Normal")
 		
 		if cur_line == "," or cur_line == ";":
 			measure_data.push_back(PackedStringArray(line_data))

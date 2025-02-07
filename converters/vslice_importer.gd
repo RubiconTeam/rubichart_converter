@@ -87,7 +87,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			note.Time = get_measure_by_format(vslice_note.get("t") as float, bpm_info, time_format)
 			note.Lane = (vslice_note.get("d") as int) % 4
 			note.Length = get_length_by_format(vslice_note.get("t") as float, (vslice_note.get("t") as float) + (vslice_note.get("l", 0.0) as float), bpm_info, time_format)
-			note.Type = vslice_note.get("k", "normal") as String
+			note.Type = vslice_note.get("k", "Normal") as String
 			
 			var lane : int = vslice_note.get("d") as int
 			if lane <= 3:
@@ -140,7 +140,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	var vslice_chars : Dictionary = vslice_play_data.get("characters") as Dictionary
 	var player_meta : CharacterMeta = CharacterMeta.new(); player_meta.Nickname = "Player"; player_meta.BarLine = "Player";player_meta.Character = vslice_chars.get("player", "bf") as String
-	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Nickname = "Speaker"; speaker_meta.Character = vslice_chars.get("girlfriend", "gf") as String
+	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Nickname = "Speaker"; player_meta.BarLine = "Speaker";speaker_meta.Character = vslice_chars.get("girlfriend", "gf") as String
 	var opponent_meta : CharacterMeta = CharacterMeta.new(); opponent_meta.Nickname = "Opponent"; player_meta.BarLine = "Opponent";player_meta.Character = vslice_chars.get("opponent", "bf-pixel") as String
 	meta.Characters = [opponent_meta, player_meta, speaker_meta]
 	

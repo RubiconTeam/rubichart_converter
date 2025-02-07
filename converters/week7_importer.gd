@@ -83,7 +83,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			note.Time = Utility.ms_to_measures(parsed_note[0] as float, bpm_changes)
 			note.Lane = (parsed_note[1] as int) % 4
 			note.Length = Utility.get_length_from_ms(parsed_note[0] as float, (parsed_note[0] as float) + (parsed_note[2] as float), bpm_changes)
-			note.Type = (parsed_note[3] as String) if parsed_note.size() > 3 else "normal"
+			note.Type = (parsed_note[3] as String) if parsed_note.size() > 3 else "Normal"
 			
 			var lane : int = parsed_note[1] as int
 			if lane <= 3:
@@ -125,7 +125,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	var opponent_meta : CharacterMeta = CharacterMeta.new(); opponent_meta.Character = swag_song.get("player2", "Missing"); opponent_meta.BarLine = "Opponent"; opponent_meta.Nickname = "Opponent"
 	var player_meta : CharacterMeta = CharacterMeta.new(); player_meta.Character = swag_song.get("player1", "Missing"); player_meta.BarLine = "Player"; player_meta.Nickname = "Player"
-	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Character = swag_song.get("gfVersion", "Missing"); speaker_meta.BarLine = "Speaker" if speaker_has_notes else ""; speaker_meta.Nickname = "Speaker"
+	var speaker_meta : CharacterMeta = CharacterMeta.new(); speaker_meta.Character = swag_song.get("gfVersion", "Missing"); speaker_meta.BarLine = "Speaker"; speaker_meta.Nickname = "Speaker"
 	meta.Characters = [opponent_meta, player_meta, speaker_meta]
 	
 	return {
