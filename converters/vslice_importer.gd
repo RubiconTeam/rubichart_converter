@@ -127,7 +127,6 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	# Song Meta
 	var meta : SongMeta = SongMeta.new()
 	meta.Name = vslice_meta.get("songName") as String
-	meta.RawName = meta.Name
 	meta.Artist = vslice_meta.get("artist") as String
 	meta.Stage = vslice_play_data.get("stage") as String
 	meta.BpmInfo = bpm_info
