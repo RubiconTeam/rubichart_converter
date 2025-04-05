@@ -71,12 +71,11 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			var note : NoteData = NoteData.new()
 
 			var serialized_type : int = _chart.get_8()
-			var measure_time : float = _chart.get_float()
-			var measure_length : float = 0.0
+			note.MeasureTime = _chart.get_float()
 			note.Lane = int(_chart.get_32())
 
 			if serialized_type >= 4: # Is hold note
-				measure_length = _chart.get_float()
+				note.MeasureLength = _chart.get_float()
 				serialized_type -= 4
 
 			match serialized_type:
@@ -89,10 +88,8 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 					read_note_parameters(_chart, note)
 
 			if _attempt_snapping:
-				individual_chart.AddNoteAtMeasureTime(note, measure_time, measure_length)
+				individual_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
 			else:
-				note.MeasureTime = measure_time
-				note.MeasureLength = measure_length
 				individual_chart.AddStrayNote(note)
 
 		individual_chart.CleanupSections()
