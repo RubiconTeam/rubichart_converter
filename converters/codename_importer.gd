@@ -14,7 +14,7 @@ func needs_meta_file() -> bool:
 func get_meta_extension() -> String:
 	return "*.json"
 
-func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
+func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess, _attempt_snapping : bool) -> Dictionary:
 	if _meta == null:
 		main_scene.print_new_line("[ERROR] Metadata file was not found!")
 		return {}
@@ -104,12 +104,12 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		events.push_back(event)
 	
 	var chart : RubiChart = RubiChart.new()
-	var charts : Array[IndividualChart] = []
+	var charts : Array[ChartData] = []
 	var characters : Array[CharacterMeta] = []
 	var chart_types : Dictionary[int, String] = {}
 	for i in cne_charts.size():
 		var current_cne_chart : Dictionary = cne_charts[i] as Dictionary
-		var ind_chart : IndividualChart = IndividualChart.new()
+		var ind_chart : ChartData = ChartData.new()
 		ind_chart.Name = current_cne_chart.get("position", ind_chart.Name) as StringName
 		
 		var cne_chart_chars : Array = current_cne_chart.get("characters") as Array
@@ -136,15 +136,20 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			var cne_note_type : int = current_cne_note.get("type") as int
 			
 			var note : NoteData = NoteData.new()
-			note.Time = Utility.ms_to_measures(cne_note_time, bpm_info)
-			note.Length = Utility.get_length_from_ms(cne_note_time, cne_note_time + cne_note_length, bpm_info)
+			note.MeasureTime = Utility.ms_to_measures(cne_note_time, bpm_info)
+			note.MeasureLength = Utility.get_length_from_ms(cne_note_time, cne_note_time + cne_note_length, bpm_info)
 			note.Lane = current_cne_note.get("id") as int 
 			note.Type = note_types[cne_note_type]
 			notes.push_back(note)
 			
 			ind_chart.Lanes = maxi(note.Lane + 1, ind_chart.Lanes)
 		
-		ind_chart.Notes = notes
+		for note in notes:
+			if _attempt_snapping:
+				ind_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+			else:
+				ind_chart.AddStrayNote(note)
+
 		charts.push_back(ind_chart)
 	
 	chart.Charts = charts

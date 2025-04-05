@@ -16,6 +16,7 @@ extends Control
 
 @onready var song_meta_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/SongMetaCheck"
 @onready var events_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/EventsCheck"
+@onready var attempt_snapping_check : CheckBox = $"ScrollContainer/VBoxContainer/OutputOptionsContainer/AttemptSnapping"
 
 @onready var output_line_edit : LineEdit = $"ScrollContainer/VBoxContainer/OutputContainer/LineEdit"
 @onready var output_rbc_button : Button = $"HBoxContainer/RBCSaveButton"
@@ -69,6 +70,8 @@ func on_type_changed(idx : int):
 	
 	meta_container.visible = current.needs_meta_file()
 	meta_line_edit.placeholder_text = "res://path/to/meta" + current.get_meta_extension()
+	
+	attempt_snapping_check.visible = current.needs_snapping()
 
 func convert_to_rbc() -> void:
 	clear_console()
@@ -114,7 +117,7 @@ func get_output() -> Dictionary:
 	var chart_contents : FileAccess = FileAccess.open(chart_line_edit.text, FileAccess.READ)
 	var meta_contents : FileAccess = FileAccess.open(meta_line_edit.text, FileAccess.READ) if current.needs_meta_file() else null
 	var events_contents : FileAccess = FileAccess.open(events_line_edit.text, FileAccess.READ) if current.needs_events_file() else null
-	var output : Dictionary = await importers[index].convert_chart(chart_contents, meta_contents, events_contents)
+	var output : Dictionary = await importers[index].convert_chart(chart_contents, meta_contents, events_contents, attempt_snapping_check.button_pressed)
 	
 	var file_accessors : Array[FileAccess] = [chart_contents, meta_contents, events_contents]
 	for i in file_accessors.size():

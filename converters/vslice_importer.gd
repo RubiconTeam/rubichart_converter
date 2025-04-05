@@ -14,7 +14,7 @@ func needs_meta_file() -> bool:
 func get_meta_extension() -> String:
 	return "*.json"
 	
-func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
+func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess, _attempt_snapping : bool) -> Dictionary:
 	if _meta == null:
 		main_scene.print_new_line("[ERROR] Metadata file was not found!")
 		return {}
@@ -75,8 +75,8 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		chart.Difficulty = ratings[difficulty]
 		chart.ScrollSpeed = (scroll_speeds[difficulty] as float) * 0.675
 		
-		var player_chart : IndividualChart = IndividualChart.new(); player_chart.Name = "Player"
-		var opponent_chart : IndividualChart = IndividualChart.new(); opponent_chart.Name = "Opponent"
+		var player_chart : ChartData = ChartData.new(); player_chart.Name = "Player"
+		var opponent_chart : ChartData = ChartData.new(); opponent_chart.Name = "Opponent"
 		
 		var player_notes : Array[NoteData] = []
 		var opponent_notes : Array[NoteData] = []
@@ -84,9 +84,9 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		var vslice_notes : Array = (vslice_charts.get("notes") as Dictionary).get(difficulty) as Array
 		for vslice_note in vslice_notes:
 			var note : NoteData = NoteData.new()
-			note.Time = get_measure_by_format(vslice_note.get("t") as float, bpm_info, time_format)
+			note.MeasureTime = get_measure_by_format(vslice_note.get("t") as float, bpm_info, time_format)
 			note.Lane = (vslice_note.get("d") as int) % 4
-			note.Length = get_length_by_format(vslice_note.get("t") as float, (vslice_note.get("t") as float) + (vslice_note.get("l", 0.0) as float), bpm_info, time_format)
+			note.MeasureLength = get_length_by_format(vslice_note.get("t") as float, (vslice_note.get("t") as float) + (vslice_note.get("l", 0.0) as float), bpm_info, time_format)
 			note.Type = vslice_note.get("k", "Normal") as String
 			
 			var lane : int = vslice_note.get("d") as int
@@ -95,8 +95,18 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			elif lane <= 7:
 				opponent_notes.push_back(note)
 		
-		player_chart.Notes = player_notes
-		opponent_chart.Notes = opponent_notes
+		for note in player_notes:
+			if _attempt_snapping:
+				player_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+			else:
+				player_chart.AddStrayNote(note)
+
+		for note in opponent_notes:
+			if _attempt_snapping:
+				opponent_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+			else:
+				opponent_chart.AddStrayNote(note)
+
 		chart.Charts = [opponent_chart, player_chart]
 		charts["Mania-" + difficulty[0].to_upper() + difficulty.substr(1)] = chart
 	

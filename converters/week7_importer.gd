@@ -8,7 +8,7 @@ func get_name() -> String:
 func get_extension() -> String:
 	return "*.json"
 	
-func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
+func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess, _attempt_snapping : bool) -> Dictionary:
 	if _chart == null:
 		main_scene.print_new_line("[ERROR] Chart file was not found!")
 		return {}
@@ -80,9 +80,9 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		for n in notes.size():
 			var parsed_note : Array = notes[n] as Array
 			var note : NoteData = NoteData.new()
-			note.Time = Utility.ms_to_measures(parsed_note[0] as float, bpm_changes)
+			note.MeasureTime = Utility.ms_to_measures(parsed_note[0] as float, bpm_changes)
 			note.Lane = (parsed_note[1] as int) % 4
-			note.Length = Utility.get_length_from_ms(parsed_note[0] as float, (parsed_note[0] as float) + (parsed_note[2] as float), bpm_changes)
+			note.MeasureLength = Utility.get_length_from_ms(parsed_note[0] as float, (parsed_note[0] as float) + (parsed_note[2] as float), bpm_changes)
 			note.Type = (parsed_note[3] as String) if parsed_note.size() > 3 else "Normal"
 			
 			var lane : int = parsed_note[1] as int
@@ -102,16 +102,32 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			else:
 				speaker_notes.push_back(note)
 	
-	var opponent_chart : IndividualChart = IndividualChart.new(); opponent_chart.Name = "Opponent"; opponent_chart.Notes = opponent_notes; opponent_chart.Lanes = 4
-	var player_chart : IndividualChart = IndividualChart.new(); player_chart.Name = "Player"; player_chart.Notes = player_notes; player_chart.Lanes = 4
+	var opponent_chart : ChartData = ChartData.new(); opponent_chart.Name = "Opponent"; opponent_chart.Lanes = 4
+	for note in opponent_notes:
+		if _attempt_snapping:
+			opponent_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+		else:
+			opponent_chart.AddStrayNote(note)
+	
+	var player_chart : ChartData = ChartData.new(); player_chart.Name = "Player"; player_chart.Lanes = 4
+	for note in player_notes:
+		if _attempt_snapping:
+			player_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+		else:
+			player_chart.AddStrayNote(note)
+	
 	var speaker_has_notes : bool = speaker_notes.size() > 0
 	if speaker_has_notes:
-		var speaker_chart : IndividualChart = IndividualChart.new(); speaker_chart.Name = "Speaker"; speaker_chart.Notes = speaker_notes; speaker_chart.Lanes = 4
+		var speaker_chart : ChartData = ChartData.new(); speaker_chart.Name = "Speaker"; speaker_chart.Lanes = 4
+		for note in speaker_notes:
+			if _attempt_snapping:
+				speaker_chart.AddNoteAtMeasureTime(note, note.MeasureTime, note.MeasureLength)
+			else:
+				speaker_chart.AddStrayNote(note)
+		
 		chart.Charts = [opponent_chart, player_chart, speaker_chart]
 	else:
 		chart.Charts = [opponent_chart, player_chart]
-		
-	chart.Format()
 	
 	# Events
 	var event_meta : EventMeta = EventMeta.new()

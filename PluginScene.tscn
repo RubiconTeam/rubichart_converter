@@ -43,7 +43,7 @@ text = "Input File:"
 [node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "res://path/to/chart.json"
+placeholder_text = "res://path/to/chart*.json"
 
 [node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/InputContainer"]
 layout_mode = 2
@@ -76,7 +76,7 @@ text = "Meta File:"
 [node name="LineEdit" type="LineEdit" parent="ScrollContainer/VBoxContainer/MetaContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "res://path/to/meta.json"
+placeholder_text = "res://path/to/meta*.json"
 
 [node name="Button" type="Button" parent="ScrollContainer/VBoxContainer/MetaContainer"]
 layout_mode = 2
@@ -111,6 +111,10 @@ text = "Create Song Meta"
 [node name="EventsCheck" type="CheckBox" parent="ScrollContainer/VBoxContainer/OutputOptionsContainer"]
 layout_mode = 2
 text = "Create Events"
+
+[node name="AttemptSnapping" type="CheckBox" parent="ScrollContainer/VBoxContainer/OutputOptionsContainer"]
+layout_mode = 2
+text = "Attempt Snapping (may cause loss of notes)"
 
 [node name="HSeparator3" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2

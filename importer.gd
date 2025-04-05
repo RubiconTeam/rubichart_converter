@@ -25,5 +25,8 @@ func needs_events_file() -> bool:
 func get_events_extension() -> String:
 	return ""
 
-func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess) -> Dictionary:
+func needs_snapping() -> bool:
+	return true
+
+func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess, _attempt_snapping : bool) -> Dictionary:
 	return {}

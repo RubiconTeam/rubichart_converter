@@ -204,7 +204,7 @@ func load_chart_from_type(chart : RubiChart, type : PackedStringArray, reader : 
 							hold_notes[n].Length = i + (float(t) / float(measure.size())) - hold_notes[n].Time
 							hold_notes[n] = null
 	
-	var first_chart : IndividualChart = IndividualChart.new()
+	var first_chart : ChartData = ChartData.new()
 	first_chart.Lanes = lane_count
 	first_chart.Notes = first_chart_notes
 	if second_chart_notes.is_empty():
@@ -213,7 +213,7 @@ func load_chart_from_type(chart : RubiChart, type : PackedStringArray, reader : 
 		return chart
 	
 	first_chart.Name = &"Opponent"
-	var second_chart : IndividualChart = IndividualChart.new()
+	var second_chart : ChartData = ChartData.new()
 	second_chart.Name = &"Player"
 	second_chart.Lanes = lane_count
 	second_chart.Notes = second_chart_notes
