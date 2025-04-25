@@ -45,16 +45,16 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var vslice_bpm_info : Array = vslice_meta.get("timeChanges") as Array
 	
 	var first_vslice_bpm : Dictionary = vslice_bpm_info[0] as Dictionary
-	var first_bpm : BpmInfo = BpmInfo.new()
+	var first_bpm : TimeChange = TimeChange.new()
 	first_bpm.Time = 0.0
 	first_bpm.Bpm = first_vslice_bpm.get("bpm") as float
 	first_bpm.TimeSignatureNumerator = first_vslice_bpm.get("n") as int
 	first_bpm.TimeSignatureDenominator = first_vslice_bpm.get("d") as int
 	
-	var bpm_info : Array[BpmInfo] = [first_bpm]
+	var bpm_info : Array[TimeChange] = [first_bpm]
 	for i in range(1, vslice_bpm_info.size()):
 		var vslice_bpm : Dictionary = vslice_bpm_info[i] as Dictionary
-		var bpm : BpmInfo = BpmInfo.new()
+		var bpm : TimeChange = TimeChange.new()
 		bpm.Time = get_measure_by_format(vslice_bpm.get("t") as float, bpm_info, time_format)
 		bpm.Bpm = vslice_bpm.get("bpm") as float
 		bpm.TimeSignatureNumerator = vslice_bpm.get("n") as int
@@ -139,7 +139,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	meta.Name = vslice_meta.get("songName") as String
 	meta.Artist = vslice_meta.get("artist") as String
 	meta.Stage = vslice_play_data.get("stage") as String
-	meta.BpmInfo = bpm_info
+	meta.TimeChange = bpm_info
 	
 	var vslice_noteskin : String = vslice_play_data.get("noteStyle") as String
 	if vslice_noteskin == "default":
@@ -159,7 +159,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		"meta": meta
 	}
 
-func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[BpmInfo], time_format : String) -> EventData:
+func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[TimeChange], time_format : String) -> EventData:
 	var name : String =  vslice_event.get("e") as String
 	var vslice_arguments : Dictionary = vslice_event.get("v") as Dictionary
 	match name:
@@ -180,7 +180,7 @@ func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[BpmInfo], tim
 	
 	return null
 
-func get_measure_by_format(time : float, bpm_changes : Array[BpmInfo], time_format : String) -> float:
+func get_measure_by_format(time : float, bpm_changes : Array[TimeChange], time_format : String) -> float:
 	match time_format:
 		"ticks": # TODO: Do this later
 			return 0.0
@@ -191,7 +191,7 @@ func get_measure_by_format(time : float, bpm_changes : Array[BpmInfo], time_form
 	
 	return 0.0
 	
-func get_length_by_format(start : float, end : float, bpm_changes : Array[BpmInfo], time_format : String) -> float:
+func get_length_by_format(start : float, end : float, bpm_changes : Array[TimeChange], time_format : String) -> float:
 	match time_format:
 		"ticks": # TODO: Do this later
 			return 0.0

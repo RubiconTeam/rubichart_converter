@@ -45,7 +45,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 					meta.Offset = float(value)
 				continue
 			"BPMS":
-				var bpm_info : Array[BpmInfo] = []
+				var bpm_info : Array[TimeChange] = []
 				cur_line = cur_line.substr(6)
 				while true:
 					var split_bpms : PackedStringArray = cur_line.split(",")
@@ -54,7 +54,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 						if bpm_lines.size() != 2:
 							continue
 						
-						var new_bpm : BpmInfo = BpmInfo.new()
+						var new_bpm : TimeChange = TimeChange.new()
 						new_bpm.Time = float(bpm_lines[0]) / 4.0
 						new_bpm.Bpm = float(bpm_lines[1])
 						bpm_info.push_back(new_bpm)
@@ -64,7 +64,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 						
 					cur_line = _chart.get_line()
 				
-				meta.BpmInfo = bpm_info
+				meta.TimeChange = bpm_info
 				continue
 			"NOTES":
 				var chart : RubiChart = RubiChart.new()

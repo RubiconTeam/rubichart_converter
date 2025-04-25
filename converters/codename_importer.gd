@@ -34,12 +34,12 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	meta.RawName = cne_meta.get("name", cne_meta.get("displayName", "")) as String
 	meta.Name = cne_meta.get("displayName", meta.Name) as String
 	
-	var first_bpm : BpmInfo = BpmInfo.new()
+	var first_bpm : TimeChange = TimeChange.new()
 	first_bpm.Time = 0.0
 	first_bpm.Bpm = cne_meta.get("bpm") as float
 	first_bpm.TimeSignatureNumerator = cne_meta.get("beatsPerMeasure", 4) as int
 	first_bpm.TimeSignatureDenominator = (cne_meta.get("stepsPerBeat", 16) as int) / first_bpm.TimeSignatureNumerator
-	var bpm_info : Array[BpmInfo] = [first_bpm]
+	var bpm_info : Array[TimeChange] = [first_bpm]
 	
 	if _chart == null:
 		main_scene.print_new_line("[ERROR] Chart file was not found!")
@@ -79,7 +79,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 		var cne_event_params : Array = current_cne_event.get("params") as Array
 		
 		if cne_event_name == &"BPM Change":
-			var bpm : BpmInfo = BpmInfo.new()
+			var bpm : TimeChange = TimeChange.new()
 			bpm.Time = Utility.ms_to_measures(cne_event_ms, bpm_info)
 			bpm.Bpm = cne_event_params[0] as float
 			bpm.TimeSignatureNumerator = first_bpm.TimeSignatureNumerator
@@ -157,7 +157,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	meta.Characters = characters
 	meta.Stage = cne_chart_meta.get("stage") as String
-	meta.BpmInfo = bpm_info
+	meta.TimeChange = bpm_info
 	
 	meta.PlayableCharts = [chart_types[1], chart_types[0]] if (cne_meta.get("opponentModeAllowed", false) as bool) else [chart_types[1]]
 	
