@@ -140,6 +140,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	meta.Artist = vslice_meta.get("artist") as String
 	meta.Stages = [vslice_play_data.get("stage") as String]
 	meta.TimeChanges = bpm_info
+	meta.Events = events
 	
 	var vslice_noteskin : String = vslice_play_data.get("noteStyle") as String
 	if vslice_noteskin == "default":
@@ -167,11 +168,11 @@ func get_rubicon_event(vslice_event : Dictionary, bpm_info : Array[TimeChange], 
 			var event : EventData = EventData.new()
 			event.Time = get_measure_by_format(vslice_event.get("t") as float, bpm_info, time_format)
 			if vslice_arguments.get("x", 0.0) != 0.0 or vslice_arguments.get("y", 0.0) != 0.0:
-				event.Name = &"Set Camera Position"
+				event.Name = &"SetCameraPosition"
 				event.Arguments[&"X"] = vslice_arguments.get("x", 0.0)
 				event.Arguments[&"Y"] = vslice_arguments.get("y", 0.0)
 			else:
-				event.Name = &"SetCameraFocus"
+				event.Name = &"SetCameraFocusGroup"
 				
 				var vslice_char_focus : int = vslice_arguments.get("char") as int
 				event.Arguments[&"Focus"] = &"Opponent" if vslice_char_focus == 1 else &"Player"

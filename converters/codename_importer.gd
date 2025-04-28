@@ -90,7 +90,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 			"Camera Movement":
 				var event : EventData = EventData.new()
 				event.Time = Utility.ms_to_measures(cne_event_ms, bpm_info)
-				event.Name = &"SetCameraFocus"
+				event.Name = &"SetCameraFocusGroup"
 				event.Arguments = { &"Focus": cne_chart_names[cne_event_params[0] as int] }
 				events.push_back(event)
 				continue
@@ -163,6 +163,7 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	var event_meta : EventMeta = EventMeta.new()
 	event_meta.Events = events
+	meta.Events = event_meta
 	
 	return {
 		"charts": { "Mania-Chart": chart },
