@@ -138,8 +138,8 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	var meta : SongMeta = SongMeta.new()
 	meta.Name = vslice_meta.get("songName") as String
 	meta.Artist = vslice_meta.get("artist") as String
-	meta.Stage = vslice_play_data.get("stage") as String
-	meta.TimeChange = bpm_info
+	meta.Stages = [vslice_play_data.get("stage") as String]
+	meta.TimeChanges = bpm_info
 	
 	var vslice_noteskin : String = vslice_play_data.get("noteStyle") as String
 	if vslice_noteskin == "default":

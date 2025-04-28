@@ -135,9 +135,9 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	
 	# Song Meta
 	var meta : SongMeta = SongMeta.new()
-	meta.Stage = swag_song.get("stage", "stage") as String
+	meta.Stages = [swag_song.get("stage", "stage") as String]
 	meta.PlayableCharts = ["Player", "Opponent"]
-	meta.TimeChange = bpm_changes
+	meta.TimeChanges = bpm_changes
 	
 	var opponent_meta : CharacterMeta = CharacterMeta.new(); opponent_meta.Character = swag_song.get("player2", "Missing"); opponent_meta.BarLine = "Opponent"; opponent_meta.Nickname = "Opponent"
 	var player_meta : CharacterMeta = CharacterMeta.new(); player_meta.Character = swag_song.get("player1", "Missing"); player_meta.BarLine = "Player"; player_meta.Nickname = "Player"

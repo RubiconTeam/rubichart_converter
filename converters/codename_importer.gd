@@ -156,8 +156,8 @@ func convert_chart(_chart : FileAccess, _meta : FileAccess, _events : FileAccess
 	chart.ScrollSpeed = (cne_chart_meta.get("scrollSpeed", 1.0) as float) * 0.675
 	
 	meta.Characters = characters
-	meta.Stage = cne_chart_meta.get("stage") as String
-	meta.TimeChange = bpm_info
+	meta.Stages = [cne_chart_meta.get("stage") as String]
+	meta.TimeChanges = bpm_info
 	
 	meta.PlayableCharts = [chart_types[1], chart_types[0]] if (cne_meta.get("opponentModeAllowed", false) as bool) else [chart_types[1]]
 	
