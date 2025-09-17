@@ -135,7 +135,7 @@ func print_new_line(text : String) -> void:
 func clear_console() -> void:
 	console_output.text = ""
 	
-func open_file_dialog(file_mode : int, extensions : PackedStringArray, on_single_chosen : Callable, on_multiple_chosen : Callable = func():):
+func open_file_dialog(file_mode : int, extensions : PackedStringArray, on_single_chosen : Callable, on_multiple_chosen : Callable = func():pass):
 	var current : Importer = importers[index]
 	if Engine.is_editor_hint():
 		var editor_file : EditorFileDialog = EditorFileDialog.new()
