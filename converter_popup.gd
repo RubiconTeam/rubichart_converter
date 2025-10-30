@@ -2,6 +2,7 @@
 extends PopupMenu
 
 const ConverterWindow = preload("res://addons/rubichart_converter/converter_window.gd")
+const FunkinConverter = preload("res://addons/rubichart_converter/converters/funkin.gd")
 
 @export_group("References", "reference_")
 @export var reference_window_scene : PackedScene
@@ -20,4 +21,4 @@ func _exit_tree() -> void:
 func on_clicked(index : int) -> void:
 	match index:
 		0:
-			print("clicked on one")
+			FunkinConverter.convert_chart(EditorInterface.get_selected_paths()[0])
