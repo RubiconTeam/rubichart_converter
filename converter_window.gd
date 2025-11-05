@@ -67,6 +67,5 @@ func fill_dictionary_values(dictionary : Dictionary[String, Variant]) -> bool:
 	return true
 
 func close_requested() -> void:
-	print("CLoSE")
 	_was_closed_prematurely = true
 	reference_confirm_button.pressed.emit()

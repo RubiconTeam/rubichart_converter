@@ -68,7 +68,7 @@ static func convert_chart(file_path : String) -> void:
 			var measure_length : float = RubiconTimeChange.get_measure_at_millisecond(metadata.time_changes, starting_ms + data[2]) - measure_time
 			
 			var note : RubiChartNote = RubiChartNote.new()
-			note.id = "Mania_Lane%s" % (lane % 4)
+			note.id = "mania_lane%s" % (lane % 4)
 			if data.size() > 3:
 				note.type = data[3]
 			
@@ -150,4 +150,4 @@ static func chart_add_note_at_measure_time(chart : RubiChart, note : RubiChartNo
 		quant = cur_quant
 		break
 	
-	RubiChartEditorFunctions.chart_add_note_end(chart, note, measure_offset, offset, quant)
+	RubiChartEditorFunctions.chart_add_note_end(chart, note, base_measure, offset, quant)
