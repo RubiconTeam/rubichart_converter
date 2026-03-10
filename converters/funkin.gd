@@ -14,6 +14,7 @@ static func convert_chart(file_path : String) -> void:
 	first_tc.time_signature_denominator = 4
 	
 	metadata.time_changes.append(first_tc)
+	RubiconTimeChange.update(metadata.time_changes)
 	
 	var notemaps : Array[RubiChart] = [RubiChart.new(), RubiChart.new(), RubiChart.new()]
 	for map in notemaps:
