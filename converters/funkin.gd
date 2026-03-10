@@ -14,7 +14,6 @@ static func convert_chart(file_path : String) -> void:
 	first_tc.time_signature_denominator = 4
 	
 	metadata.time_changes.append(first_tc)
-	RubiconTimeChange.update(metadata.time_changes)
 	
 	var notemaps : Array[RubiChart] = [RubiChart.new(), RubiChart.new(), RubiChart.new()]
 	for map in notemaps:
@@ -33,6 +32,8 @@ static func convert_chart(file_path : String) -> void:
 		time_change.time_signature_numerator = 4
 		
 		metadata.time_changes.append(time_change)
+	
+	RubiconTimeChange.update(metadata.time_changes)
 	
 	var last_camera : int = 0
 	var panning_changes : Dictionary[float, String] # Actually implement later
