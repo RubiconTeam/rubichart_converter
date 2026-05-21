@@ -1,7 +1,11 @@
 static func get_new_parameters() -> Dictionary[String, Variant]:
 	return Dictionary()
 
-static func convert_chart(file_path : String) -> void:
+static func needs_metadata() -> bool:
+	return false
+
+static func convert_chart(args: Array[String]) -> void:
+	var file_path: String = args[0]
 	var text : String = FileAccess.get_file_as_string(file_path)
 	var swag_song : Dictionary = JSON.parse_string(text)["song"]
 	

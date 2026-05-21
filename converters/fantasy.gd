@@ -1,9 +1,13 @@
 static func get_new_parameters() -> Dictionary[String, Variant]:
 	return Dictionary()
 
-static func convert_chart(file_path : String) -> void:
-	var text : String = FileAccess.get_file_as_string(file_path)
-	var data : Dictionary = JSON.parse_string(text)
+static func needs_metadata() -> bool:
+	return false
+
+static func convert_chart(args: Array[String]) -> void:
+	var file_path: String = args[0]
+	var text: String = FileAccess.get_file_as_string(file_path)
+	var data: Dictionary = JSON.parse_string(text)
 	
 	var time_sig_numerator : float = data["timeSigNumerator"]
 	var time_sig_denominator : float = data["timeSigDenominator"]
