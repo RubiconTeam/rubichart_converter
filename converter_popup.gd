@@ -22,6 +22,6 @@ func _exit_tree() -> void:
 func on_clicked(index : int) -> void:
 	match index:
 		0:
-			FunkinConverter.convert_chart(EditorInterface.get_selected_paths()[0])
+			FunkinConverter.convert_chart([EditorInterface.get_selected_paths()[0]])
 		1:
-			FantasyConverter.convert_chart(EditorInterface.get_selected_paths()[0])
+			FantasyConverter.convert_chart([EditorInterface.get_selected_paths()[0]])
