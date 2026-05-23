@@ -63,5 +63,7 @@ func _make_chart(args: Array) -> void:
 	meta_selector.connect(&"accepted", func(meta_path: String, skipped: bool):
 		if !skipped and !meta_path.is_empty():
 			_args.append(meta_path)
+		elif meta_path.is_empty():
+			return
 		Converters[chart_type_string].convert_chart(_args)
 		)

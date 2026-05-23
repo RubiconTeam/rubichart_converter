@@ -18,7 +18,8 @@ oversampling_override = 1.0
 title = "Select metadata file"
 initial_position = 2
 size = Vector2i(300, 150)
-unresizable = true
+content_scale_size = Vector2i(300, 150)
+content_scale_aspect = 1
 script = ExtResource("1_c4w0t")
 chart_type_label = NodePath("Panel/VBoxContainer/Label")
 file_path = NodePath("Panel/VBoxContainer/HBoxContainer/LineEdit")
@@ -36,11 +37,13 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=982027470]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.99000007
+anchor_bottom = 0.74
 offset_left = 4.0
 offset_top = 3.0
-offset_right = 297.0
-offset_bottom = 111.0
+offset_right = -3.0517578e-05
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=308322321]
@@ -70,9 +73,13 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=1866239159]
-layout_mode = 0
-offset_right = 300.0
-offset_bottom = 146.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.97300005
+offset_bottom = 0.049987793
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 alignment = 1
 
@@ -83,6 +90,7 @@ size_flags_vertical = 8
 text = "Cancel"
 
 [node name="Skip" type="Button" parent="Panel/HBoxContainer" unique_id=1824933680]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 8
@@ -107,6 +115,7 @@ file_mode = 0
 display_mode = 1
 filters = PackedStringArray("*.json")
 
+[connection signal="close_requested" from="." to="." method="cancel"]
 [connection signal="text_changed" from="Panel/VBoxContainer/HBoxContainer/LineEdit" to="." method="path_updated"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Button" to="." method="_folder_button"]
 [connection signal="pressed" from="Panel/HBoxContainer/Cancel" to="." method="cancel"]
