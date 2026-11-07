@@ -102,11 +102,11 @@ static func convert_chart(args: Array[String]) -> void:
 	var directory : String = file_path.get_base_dir()
 	var file_name : String = file_path.get_file().replace("." + file_path.get_extension(), "")
 	
-	ResourceSaver.save(notemaps[0], "%s/%s_Opponent.tres" % [directory, file_name])
-	ResourceSaver.save(notemaps[1], "%s/%s_Player.tres" % [directory, file_name])
-	ResourceSaver.save(notemaps[2], "%s/%s_Speaker.tres" % [directory, file_name])
+	ResourceSaver.save(notemaps[0], "%s/%s_opponent.tres" % [directory, file_name])
+	ResourceSaver.save(notemaps[1], "%s/%s_player.tres" % [directory, file_name])
+	ResourceSaver.save(notemaps[2], "%s/%s_speaker.tres" % [directory, file_name])
 	
-	ResourceSaver.save(metadata, "%s/Meta.tres" % [directory])
+	ResourceSaver.save(metadata, "%s/meta.tres" % [directory])
 
 static func is_equal_approx_with_tolerance(a : float, b : float, tolerance : float) -> bool:
 	if a == b:
