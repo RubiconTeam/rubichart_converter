@@ -4,6 +4,8 @@ static func get_new_parameters() -> Dictionary[String, Variant]:
 static func needs_metadata() -> bool:
 	return false
 
+const ConverterEditorPlugin = preload("res://addons/rubichart_converter/plugin.gd")
+
 static func convert_chart(args: Array[String]) -> void:
 	var file_path: String = args[0]
 	var text : String = FileAccess.get_file_as_string(file_path)
@@ -21,7 +23,12 @@ static func convert_chart(args: Array[String]) -> void:
 	
 	var notemaps : Array[RubiChart] = [RubiChart.new(), RubiChart.new(), RubiChart.new()]
 	for map in notemaps:
-		map.scroll_multiplier = swag_song["speed"]
+		var scroll_multiplier: float = 0.6667
+		if ConverterEditorPlugin.instance != null:
+			var editor_settings: EditorSettings = ConverterEditorPlugin.instance.get_editor_interface().get_editor_settings()
+			scroll_multiplier = editor_settings.get_setting("rubichart_converter/general/initial_scroll_multiplier")
+		
+		map.scroll_multiplier = swag_song["speed"] * scroll_multiplier
 
 	var sections : Array = swag_song["notes"]
 	for measure in sections.size():
@@ -45,7 +52,7 @@ static func convert_chart(args: Array[String]) -> void:
 		var section : Dictionary = sections[measure]
 		var measure_bpm : float = metadata.time_changes.filter(func(x): return x.measure <= measure).front().bpm
 		var is_player_section : bool = section["mustHitSection"]
-		var is_speaker_section : bool = section.has("gfSection") and section["gfVersion"]
+		var is_speaker_section : bool = section.has("gfSection")
 		var section_camera = 1 if is_player_section else 0
 		
 		if is_speaker_section:
