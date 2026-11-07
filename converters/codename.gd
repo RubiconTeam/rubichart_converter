@@ -4,8 +4,6 @@ static func get_new_parameters() -> Dictionary[String, Variant]:
 static func needs_metadata() -> bool:
 	return true
 
-const ConverterEditorPlugin = preload("res://addons/rubichart_converter/plugin.gd")
-
 static func convert_chart(args: Array[String]) -> void:
 	if args.is_empty():
 		return
@@ -85,9 +83,10 @@ static func convert_chart(args: Array[String]) -> void:
 		var chart: RubiChart = RubiChart.new()
 		
 		var scroll_multiplier: float = 0.6667
-		if ConverterEditorPlugin.instance != null:
-			var editor_settings: EditorSettings = ConverterEditorPlugin.instance.get_editor_interface().get_editor_settings()
+		var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
+		if editor_settings.has_setting("rubichart_converter/general/initial_scroll_multiplier"):
 			scroll_multiplier = editor_settings.get_setting("rubichart_converter/general/initial_scroll_multiplier")
+		
 		chart.scroll_multiplier = chart_parse["scrollSpeed"] * scroll_multiplier
 		
 		if !strumline.has("notes") or strumline["notes"].is_empty():

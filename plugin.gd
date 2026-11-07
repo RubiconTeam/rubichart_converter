@@ -7,12 +7,7 @@ const ConverterContextMenu: GDScript = preload("res://addons/rubichart_converter
 var _converter_popup_instance: PopupMenu
 var _converter_context_menu_instance: EditorContextMenuPlugin
 
-static var instance: EditorPlugin
-
 func _enter_tree() -> void:
-	if instance == null:
-		instance = self
-	
 	add_editor_setting("rubichart_converter/general/initial_scroll_multiplier", TYPE_FLOAT, PROPERTY_HINT_NONE, "", 0.6667)
 	#add_editor_setting("rubichart_converter/general/convert_camera_changes_into_animation", TYPE_BOOL, PROPERTY_HINT_NONE, "", true)
 	
@@ -24,9 +19,6 @@ func _enter_tree() -> void:
 	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_FILESYSTEM, _converter_context_menu_instance)
 
 func _exit_tree() -> void:
-	if instance != null:
-		instance = null
-	
 	if _converter_popup_instance == null or _converter_context_menu_instance == null:
 		return
 	

@@ -4,8 +4,6 @@ static func get_new_parameters() -> Dictionary[String, Variant]:
 static func needs_metadata() -> bool:
 	return false
 
-const ConverterEditorPlugin = preload("res://addons/rubichart_converter/plugin.gd")
-
 static func convert_chart(args: Array[String]) -> void:
 	var file_path: String = args[0]
 	var text : String = FileAccess.get_file_as_string(file_path)
@@ -24,8 +22,8 @@ static func convert_chart(args: Array[String]) -> void:
 	var notemaps : Array[RubiChart] = [RubiChart.new(), RubiChart.new(), RubiChart.new()]
 	for map in notemaps:
 		var scroll_multiplier: float = 0.6667
-		if ConverterEditorPlugin.instance != null:
-			var editor_settings: EditorSettings = ConverterEditorPlugin.instance.get_editor_interface().get_editor_settings()
+		var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
+		if editor_settings.has_setting("rubichart_converter/general/initial_scroll_multiplier"):
 			scroll_multiplier = editor_settings.get_setting("rubichart_converter/general/initial_scroll_multiplier")
 		
 		map.scroll_multiplier = swag_song["speed"] * scroll_multiplier
