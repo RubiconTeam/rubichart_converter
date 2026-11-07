@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bs3gxk02cnlr4"]
 
-[ext_resource type="Script" uid="uid://cf833o7prq8pb" path="res://addons/rubichart_converter/converter_meta_selector.gd" id="1_c4w0t"]
+[ext_resource type="Script" uid="uid://744378ux44fx" path="res://addons/rubichart_converter/converter_meta_selector.gd" id="1_c4w0t"]
 
 [sub_resource type="DPITexture" id="DPITexture_c4w0t"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-4a1 1 0 0 1-1-1V3a1 1 0 0 0-1-1z\"/></svg>
@@ -21,9 +21,9 @@ size = Vector2i(300, 150)
 content_scale_size = Vector2i(300, 150)
 content_scale_aspect = 1
 script = ExtResource("1_c4w0t")
-chart_type_label = NodePath("Panel/VBoxContainer/Label")
-file_path = NodePath("Panel/VBoxContainer/HBoxContainer/LineEdit")
-folder_button = NodePath("Panel/VBoxContainer/HBoxContainer/Button")
+chart_type_label = NodePath("Panel/MarginContainer/VBoxContainer/Label")
+file_path = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+folder_button = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/Button")
 accept_button = NodePath("Panel/HBoxContainer/Ok")
 file_dialog = NodePath("FileDialog")
 
@@ -36,33 +36,39 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=982027470]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1358001022]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.99000007
+anchor_right = 0.99
 anchor_bottom = 0.74
-offset_left = 4.0
-offset_top = 3.0
-offset_right = -3.0517578e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=982027470]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=308322321]
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=308322321]
 layout_mode = 2
 text = "ENGINE metadata file:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=403997677]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=403997677]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LineEdit" type="LineEdit" parent="Panel/VBoxContainer/HBoxContainer" unique_id=206962192]
+[node name="LineEdit" type="LineEdit" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=206962192]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="Panel/VBoxContainer/HBoxContainer" unique_id=97825376]
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=97825376]
 layout_mode = 2
 icon = SubResource("DPITexture_c4w0t")
 
-[node name="Label2" type="Label" parent="Panel/VBoxContainer" unique_id=530751150]
+[node name="Label2" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=530751150]
 modulate = Color(1, 1, 1, 0.28627452)
 layout_mode = 2
 size_flags_vertical = 10
@@ -116,8 +122,8 @@ display_mode = 1
 filters = PackedStringArray("*.json")
 
 [connection signal="close_requested" from="." to="." method="cancel"]
-[connection signal="text_changed" from="Panel/VBoxContainer/HBoxContainer/LineEdit" to="." method="path_updated"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Button" to="." method="_folder_button"]
+[connection signal="text_changed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="path_updated"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_folder_button"]
 [connection signal="pressed" from="Panel/HBoxContainer/Cancel" to="." method="cancel"]
 [connection signal="pressed" from="Panel/HBoxContainer/Skip" to="." method="skip"]
 [connection signal="pressed" from="Panel/HBoxContainer/Ok" to="." method="accept"]
